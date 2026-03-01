@@ -1,5 +1,0 @@
-Pillow>=9.0
-mss>=6.0
-pytesseract>=0.3.10
-pyautogui>=0.9.54
-numpy>=1.23
