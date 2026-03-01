@@ -1,0 +1,2 @@
+[console_scripts]
+hitori-solver = hitori_solver.main:main

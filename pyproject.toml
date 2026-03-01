@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hitori-solver"
+version = "0.1.0"
+description = "Automated solver for the Hitori puzzle game"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "Pillow>=9.0",
+    "mss>=6.0",
+    "pytesseract>=0.3.10",
+    "pyautogui>=0.9.54",
+    "numpy>=1.23",
+]
+
+[project.scripts]
+hitori-solver = "hitori_solver.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hitori_solver*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
