@@ -24,3 +24,8 @@ htmlcov/
 .idea/
 .vscode/
 *.swp
+
+# Images
+*.png
+*.jpg
+*.jpeg
