@@ -98,18 +98,9 @@ class HitoriSolver:
                                 self._board.set_state(nr, nc, CellState.WHITE)
                                 changed = True
 
-            # Rule 3 – if a value appears exactly once in a row/col → white
-            for r in range(self._board.rows):
-                changed |= self._mark_unique_in_line(
-                    [(r, c) for c in range(self._board.cols)]
-                )
-            for c in range(self._board.cols):
-                changed |= self._mark_unique_in_line(
-                    [(r, c) for r in range(self._board.rows)]
-                )
-
-            # Rule 4 – if a row/col has duplicates among unknown/white cells,
-            #          check whether one copy must be black to resolve them.
+            # Rule 3 – resolve duplicates in each row/column among
+            #          unknown/white cells by forcing some cells black
+            #          when necessary to eliminate the duplicates.
             for r in range(self._board.rows):
                 if not self._resolve_duplicates_in_line(
                     [(r, c) for c in range(self._board.cols)]
@@ -122,31 +113,12 @@ class HitoriSolver:
                 ):
                     return False
                 changed |= self._last_changed
-
-            # Rule 5 – white cells still need to be connected; prune if not
+            # White cells still need to be connected; prune if not
+            # Rule 4 – white cells still need to be connected; prune if not
             if not self._connectivity_check():
                 return False
 
         return True
-
-    def _mark_unique_in_line(self, cells: List[Tuple[int, int]]) -> bool:
-        """Mark cells whose value is unique in the line as WHITE."""
-        from collections import Counter
-
-        val_cells: dict = {}
-        for r, c in cells:
-            if self._board.state(r, c) != CellState.BLACK:
-                v = self._board.value(r, c)
-                val_cells.setdefault(v, []).append((r, c))
-
-        changed = False
-        for v, positions in val_cells.items():
-            if len(positions) == 1:
-                r, c = positions[0]
-                if self._board.state(r, c) == CellState.UNKNOWN:
-                    self._board.set_state(r, c, CellState.WHITE)
-                    changed = True
-        return changed
 
     _last_changed: bool = False  # set by _resolve_duplicates_in_line
 
